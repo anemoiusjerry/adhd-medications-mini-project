@@ -4,19 +4,16 @@ import { Button, Modal, Paper, } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { IPatient } from '../../shared/interfaces/patient'
 import PatientForm from './components/patientForm';
-import PatientTable from './components/PatientTable';
+import PatientTable from './components/patientTable';
 
 function App() {
-  const baseUrl = 'http://127.0.0.1:3000'
   const [showModal, setShowModal] = useState<boolean>(false)
   const [patients, setPatients] = useState<IPatient[]>([])
   const [patientData, setPatientData] = useState<IPatient | undefined>()
 
- 
-
   // load all data
   useEffect(() => {
-    fetch(baseUrl + '/all').then(res => res.json()).then(patients => 
+    fetch('/api/patients').then(res => res.json()).then(patients => 
       setPatients(patients)
     )
   }, [])
@@ -24,7 +21,7 @@ function App() {
   const _handleSubmit = (patientData: IPatient) => {
     // patient does not exist: create new
     if (patientData.id == null) {
-      fetch(baseUrl + '/new', {
+      fetch('/api/patient', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify(patientData)
@@ -41,7 +38,7 @@ function App() {
     } else {
       // update existing user
       const {id, ...patientNoId} = patientData
-      fetch(`${baseUrl}/${patientData.id}`, {
+      fetch(`/api/${patientData.id}`, {
         method: 'PUT',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify(patientNoId)
@@ -55,7 +52,7 @@ function App() {
   }
 
   const _deletePatient = (id: string) => {
-    fetch(`${baseUrl}/${id}`, {
+    fetch(`/api/${id}`, {
       method: 'DELETE',
       headers: {'Content-type': 'application/json'},
     }).then(res => {

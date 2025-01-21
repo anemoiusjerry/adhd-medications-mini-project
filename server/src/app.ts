@@ -15,7 +15,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send("Backend API")
 })
 
-app.get('/all', async (req: Request, res: Response) => {
+app.get('/api/patients', async (req: Request, res: Response) => {
+  console.log("hit")
   const query = await Patient.find().lean();
   const patients: IPatient[] = query.map(p => ({
     id: p._id.toString(),
@@ -29,7 +30,7 @@ app.get('/all', async (req: Request, res: Response) => {
   res.status(200).json(patients)
 })
 
-app.post('/new', async (req: Request, res: Response) => {
+app.post('/api/patient', async (req: Request, res: Response) => {
   try {
     let patientData = req.body
     patientData.dateOfBirth = new Date(patientData.dateOfBirth)
@@ -42,7 +43,7 @@ app.post('/new', async (req: Request, res: Response) => {
   }
 }) 
 
-app.route("/:patientId")
+app.route("/api/:patientId")
 .get(async (req: Request, res: Response) => {
   try {
     const patient = await Patient.findById(req.params.patientId);

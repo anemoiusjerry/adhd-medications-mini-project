@@ -27,6 +27,7 @@ const PatientTable = ({patients, showModal, deletePatient}: IPatientTableProps) 
     {field: 'adhdStatus', headerName: 'ADHD Diagnosis', valueFormatter:(value: number) => {
       return AdhdStatus[value]
     }, flex:1},
+    {field: 'notes', headerName: 'Notes', flex:1},
     {field: 'actions', type: 'actions', getActions: (params: GridRowParams) => [
       <GridActionsCellItem showInMenu icon={<Edit />} label="Edit" onClick={() => showModal(params.row)} />,
       <GridActionsCellItem showInMenu icon={<Delete />} label="Delete" onClick={() => deletePatient(params.row.id)} />
